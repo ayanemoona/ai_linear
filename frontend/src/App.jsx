@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // 환경변수에서 API URL 가져오기 + 디버깅
-const API_URL = import.meta.env.REACT_APP_API_URL || 'http://localhost:8001';
+// 임시 하드코딩 (테스트용)
+const API_URL = 'https://linear-model-piua.onrender.com';
 
 // 디버깅용 - 실제 사용되는 URL 확인
 console.log('🔍 현재 API_URL:', API_URL);
