@@ -604,7 +604,7 @@ function App() {
         </div>
       )}
 
-      {/* CSS 애니메이션 */}
+      {/* CSS 애니메이션*/}
       <style jsx>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
