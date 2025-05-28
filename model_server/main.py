@@ -35,9 +35,16 @@ app = FastAPI(
 )
 
 # CORS 설정 (Render 배포용)
+# CORS 설정 (Render 배포용) - 수정된 부분만
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Render에서는 일단 모든 도메인 허용
+    allow_origins=[
+        "https://ai-linear.vercel.app",  # 🆕 Vercel 프론트엔드 URL 추가
+        "https://ai-linear-parkmoonas-projects.vercel.app",  # 🆕 추가 Vercel 도메인
+        "http://localhost:3000",  # 로컬 개발용
+        "http://localhost:5173",  # Vite 개발 서버
+        "*"  # 임시로 모든 도메인 허용 (개발용)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
