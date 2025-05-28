@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// 환경변수에서 API URL 가져오기
+// 환경변수에서 API URL 가져오기 + 디버깅
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001';
+
+// 디버깅용 - 실제 사용되는 URL 확인
+console.log('🔍 현재 API_URL:', API_URL);
+console.log('🔍 환경변수 REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
 
 function App() {
   // 기본 상태 관리
@@ -23,7 +28,18 @@ function App() {
 
   const checkServer = async () => {
     try {
-      const response = await fetch(`${API_URL}/health`);
+      setServerStatus('🔄 서버 상태 확인 중... (Sleep 모드에서 깨우는 중일 수 있습니다)');
+      
+      // Render Sleep 모드 고려해서 타임아웃을 길게 설정
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90초 타임아웃
+      
+      const response = await fetch(`${API_URL}/health`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (response.ok) {
         const data = await response.json();
         setServerStatus(`✅ Render AI 서버 연결됨 (${data.platform})`);
@@ -31,7 +47,11 @@ function App() {
         setServerStatus('❌ 서버 응답 없음');
       }
     } catch (error) {
-      setServerStatus('❌ 서버 연결 실패');
+      if (error.name === 'AbortError') {
+        setServerStatus('⏰ 서버 응답 대기 중... (Render Sleep 모드에서 깨우는 중)');
+      } else {
+        setServerStatus('❌ 서버 연결 실패 - Sleep 모드일 수 있습니다');
+      }
     }
   };
 
@@ -302,7 +322,8 @@ function App() {
           fontSize: '14px',
           color: '#856404'
         }}>
-          ⚠️ <strong>Render 최적화 안내:</strong> 파일 크기는 50MB 이하, 첫 분석 시 모델 로딩으로 1-2분 소요될 수 있습니다.
+          ⚠️ <strong>Render 무료 티어 안내:</strong> 서버가 15분 이상 사용되지 않으면 Sleep 모드에 진입합니다. 
+          첫 요청 시 서버 깨우는데 1-2분 소요될 수 있습니다. 파일 크기는 50MB 이하로 제한됩니다.
         </div>
         
         <label style={{
