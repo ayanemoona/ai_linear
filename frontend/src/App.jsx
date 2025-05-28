@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8001
 
 // 디버깅용 - 실제 사용되는 URL 확인
 console.log('🔍 현재 API_URL:', API_URL);
-console.log('🔍 환경변수 REACT_APP_API_URL:', import.meta.env.VITE_REACT_APP_API_UR);
+console.log('🔍 환경변수 REACT_APP_API_URL:', import.meta.env.VITE_REACT_APP_API_URL);
 console.log('🔍 NODE_ENV:', import.meta.env.NODE_ENV);
 
 function App() {
